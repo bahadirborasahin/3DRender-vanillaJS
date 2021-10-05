@@ -14,7 +14,7 @@ class Vec{
     subtract(v){return new Vec(this.x-v.x,this.y-v.y,this.y-v.z);}
     static subtract(t,v){return new Vec(t.x-v.x,t.y-v.y,t.z-v.z);}
 
-    scale(s){return new (this.x*s,this.y*s,this.z*s);}
+    scale(s){return new Vec(this.x*s,this.y*s,this.z*s);}
     static scale(v,s){return new Vec(v.x*s,v.y*s,v.z*s);}
 
     dot(v){return this.x*v.x+this.y*v.y+this.z*v.z;}
@@ -52,7 +52,7 @@ class Mesh{
         this.rotY = 0;
         this.rotZ = 0;
         this.pos = new Vec();
-        this.palette = Array(12).fill(0).map((_,i) => i===0 ? "#000" : `#${((1<<24) * Math.random() | 0 ).toString(16)}`);
+        this.palette = Array(12).fill(0).map((_,i) => `#${((1<<24) * Math.random() | 0 ).toString(16)}`);
     }
 
     add(t){
@@ -158,15 +158,15 @@ class Mesh{
             
 
            
-            let BA = Vec.subtract(moved[i].a,moved[i].b);
-            let BC = Vec.subtract(moved[i].c,moved[i].b);
-            let crs0 = Vec.cross(BA,BC);
+            let AB = Vec.subtract(moved[i].b,moved[i].a);
+            let AC = Vec.subtract(moved[i].c,moved[i].a);
+            let crs0 = Vec.cross(AB,AC);
             let crs = crs0.normalize();
 
             moved[i].a.x = moved[i].a.x*(350/(350+moved[i].a.z)); moved[i].a.y = moved[i].a.y*(350/(350+moved[i].a.z));
             moved[i].b.x = moved[i].b.x*(350/(350+moved[i].b.z)); moved[i].b.y = moved[i].b.y*(350/(350+moved[i].b.z));
             moved[i].c.x = moved[i].c.x*(350/(350+moved[i].c.z)); moved[i].c.y = moved[i].c.y*(350/(350+moved[i].c.z));
-            if(Vec.dot(crs,Vec.subtract(crs0,new Vec(0,0,0)))>0){
+            if(Vec.dot(crs,new Vec(0,0,1))<=0){
             ctx.fillStyle = this.palette[i%2==0?i:i-1];
             ctx.beginPath();
             ctx.moveTo(moved[i].a.x,moved[i].a.y);
@@ -510,10 +510,10 @@ class Scene{
 
 
 scene = new Scene();
-for(let i =0;i<15;i++){
+for(let i =0;i<30;i++){
     cube = new Mesh();
     fillCube(cube);
-    cube.pos = new Vec(Math.random()*350-350,Math.random()*350-350,100);
+    cube.pos = new Vec(Math.random()*700-350,Math.random()*700-350,100);
     scene.add(cube);
 }
 
