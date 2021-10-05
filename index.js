@@ -166,7 +166,7 @@ class Mesh{
             moved[i].a.x = moved[i].a.x*(350/(350+moved[i].a.z)); moved[i].a.y = moved[i].a.y*(350/(350+moved[i].a.z));
             moved[i].b.x = moved[i].b.x*(350/(350+moved[i].b.z)); moved[i].b.y = moved[i].b.y*(350/(350+moved[i].b.z));
             moved[i].c.x = moved[i].c.x*(350/(350+moved[i].c.z)); moved[i].c.y = moved[i].c.y*(350/(350+moved[i].c.z));
-            if(Vec.dot(crs,new Vec(0,0,1))<=0){
+            if(Vec.dot(crs,Vec.subtract(moved[i].a,new Vec(0,0,0)))<0){
             ctx.fillStyle = this.palette[i%2==0?i:i-1];
             ctx.beginPath();
             ctx.moveTo(moved[i].a.x,moved[i].a.y);
